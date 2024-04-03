@@ -21,8 +21,8 @@ At project root, perform the following.
 4. Apply migrations and create a superuser for testing purposes
     ```sh
     make migrate
-    # use 'admin' as the username and 'password' as the password
-    poetry run python manage.py createsuperuser
+    # use 'password' as the password
+    poetry run python manage.py createsuperuser --username admin --email admin@example.com
     ```
 5. Create a personal config file (replace `<API_KEY>` and `<URL>` with the appropriate values, this is to avoid having sensitive information in the codebase)
    ```sh
@@ -30,21 +30,20 @@ At project root, perform the following.
    echo "GOOGLE_REVERSE_GEOCODING_API_KEY = <API_KEY>" >> web_api/config/personal.py
    echo "PARTNER_API_URL = <URL>" >> web_api/config/personal.py
    ```
-6. See the `core_partnerlocation` table with test data (if available)
+6. Seed the `core_partnerlocation` table with test data (if available)
 7. Run the server
     ```sh
-    make serve
+    ENVIRONMENT=personal make serve
     ```
    
 ## API
 
 In a web browser, navigate to http://localhost:8000/api/v1/appointments/next-available/ to see the generated API documentation.
 
-```http
-GET /api/v1/appointments/next-available/?lat=123.456&lon=789.123 HTTP/1.1
-Host: localhost:8000
-Authorization: Basic admin:password
-Accept: application/json
+```sh
+curl --request GET \
+  --url 'http://localhost:8000/api/v1/appointments/next-available/?lat=123&lon=456' \
+  --user admin:password
 ```
 
 ```json
