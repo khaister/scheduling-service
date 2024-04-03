@@ -1,3 +1,7 @@
-def get_location_id(zip_code: str) -> int:
-    # given a zip code, return the location id
-    return 1
+from core.models import PartnerLocation
+
+
+def get_location_ids(zip_code: str) -> list[str] | None:
+    return PartnerLocation.objects.filter(zip_code=zip_code).values_list(
+        "location_id", flat=True
+    )
