@@ -6,3 +6,6 @@ migrations:
 
 migrate:
 	poetry run python manage.py migrate
+
+lint:
+	poetry run black .
