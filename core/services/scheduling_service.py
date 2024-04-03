@@ -24,12 +24,16 @@ def get_next_available_appointment(latitude, longitude) -> dict | None:
         _logger.info("Location id not found for zip code %s", zip_code)
         return None
 
+    # get all available appointment times for each location
+    _logger.info("Location ids found for zip code %s: %s", zip_code, location_ids)
+    appointment_times = []
     for location_id in location_ids:
         next_available = partner_client.get_next_available(location_id)
-        if next_available:
-            return {
-                "location_id": location_id,
-                "appointment_time": next_available.get("epoch_time"),
-            }
+        if next_available and (time := next_available.get("epoch_time")):
+            appointment_times.append({"location_id": location_id, "appointment_time": time})
 
-    return None
+    if not appointment_times:
+        _logger.info("No appointment times found for latitude %s and longitude", latitude, longitude)
+        return None
+
+    return sorted(appointment_times, key=lambda x: x["appointment_time"], reverse=True)[0]
