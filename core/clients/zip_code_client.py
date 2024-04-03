@@ -23,5 +23,12 @@ def get_zip_code(latitude: Decimal, longitude: Decimal) -> str | None:
 
     results = data.get("results", [])
     address_components = len(results) > 0 and results[0].get("address_components", [])
-    zip_code = next((item.get("short_name") for item in address_components if "postal_code" in item.get("types", [])), None)
+    zip_code = next(
+        (
+            item.get("short_name")
+            for item in address_components
+            if "postal_code" in item.get("types", [])
+        ),
+        None,
+    )
     return zip_code
