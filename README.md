@@ -60,7 +60,8 @@ Accept: application/json
 2. Add integration tests to cover the API endpoints
 3. Add a caching mechanism to cache reverse geocoding results
    - If zip code to location id mappings are mostly static, we can cache these as well
-4. The mappings from zip code to location id provided has duplicate entries, not sure what do about those...
-   - For now, I'm looping through the list of location id's associated with a zip code and call the next-available api and return the first one found
-5. Consider a different api framework that has a better support for async operations
+4. Consider a different api framework that has a better support for async operations
    - Django ORM doesn't fully support async yet
+5. Calls for getting availabilities for multiple locations can be parallelized
+6. http session should be reused for multiple requests to reduce overhead
+7. Sorting for time is done using the standard library `sorted` which might not be the most efficient way
