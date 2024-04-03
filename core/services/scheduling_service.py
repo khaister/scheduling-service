@@ -24,4 +24,9 @@ def get_next_available_appointment(latitude, longitude) -> dict | None:
         _logger.info("Location id not found for zip code %s", zip_code)
         return None
 
-    return partner_client.get_next_available(location_id)
+    next_available = partner_client.get_next_available(location_id)
+
+    return {
+        "location_id": location_id,
+        "appointment_time": next_available and next_available.get("epoch_time"),
+    }
