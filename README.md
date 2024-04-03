@@ -24,7 +24,14 @@ At project root, perform the following.
     # use 'admin' as the username and 'password' as the password
     poetry run python manage.py createsuperuser
     ```
-5. Run the server
+5. Create a personal config file (replace `<API_KEY>` and `<URL>` with the appropriate values, this is to avoid having sensitive information in the codebase)
+   ```sh
+   touch web_api/config/personal.py
+   echo "GOOGLE_REVERSE_GEOCODING_API_KEY = <API_KEY>" >> web_api/config/personal.py
+   echo "PARTNER_API_URL = <URL>" >> web_api/config/personal.py
+   ```
+6. See the `core_partnerlocation` table with test data (if available)
+7. Run the server
     ```sh
     make serve
     ```
@@ -54,3 +61,6 @@ Accept: application/json
 3. Add a caching mechanism to cache reverse geocoding results
    - If zip code to location id mappings are mostly static, we can cache these as well
 4. The mappings from zip code to location id provided has duplicate entries, not sure what do about those...
+   - For now, I'm looping through the list of location id's associated with a zip code and call the next-available api and return the first one found
+5. Consider a different api framework that has a better support for async operations
+   - Django ORM doesn't fully support async yet
